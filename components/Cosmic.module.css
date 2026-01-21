@@ -1,0 +1,135 @@
+/* components/Cosmic.module.css */
+
+/* --- 原有背景星星和月亮的 CSS (保持不变) --- */
+@keyframes fall {
+    0% {
+        transform: translateY(-20vh) translateX(-10vw);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(120vh) translateX(10vw);
+        opacity: 0;
+    }
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.starContainer {
+    position: absolute;
+    top: 0;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.starBody {
+    background-color: white;
+    border-radius: 9999px;
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+.moon {
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 9999px;
+    background-color: transparent;
+    box-shadow: inset -15px 10px 5px 0px rgba(255, 255, 220, 0.9);
+    opacity: 0.8;
+    animation: float 6s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+    .moon {
+        width: 8rem;
+        height: 8rem;
+    }
+}
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+}
+
+.gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top, #1a0b2e 0%, #050505 100%);
+    z-index: -10;
+}
+
+
+/* --- 🔥🔥🔥 重点修改了这里 🔥🔥🔥 --- */
+
+/* 定义流星划过动画 (笔直从左上往右下飞) */
+@keyframes shoot {
+    0% {
+        /* 初始状态：从屏幕左上方外侧开始，旋转 45度 */
+        transform: translateX(-20vw) translateY(-20vh) rotate(45deg);
+        opacity: 1;
+    }
+
+    100% {
+        /* 结束状态：飞到屏幕右下方外侧，保持角度 */
+        transform: translateX(120vw) translateY(120vh) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* 流星本身的样式 */
+.shootingStar {
+    position: absolute;
+    width: 150px;
+    height: 2px;
+
+    /* 🔥 核心修改：调整渐变方向和颜色顺序 🔥 */
+    /* to right: 左边是透明(尾巴)，右边是白色(头部) */
+    /* 配合 rotate(45deg)，右边的白色头部正好指向右下角 */
+    background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 1) 100%);
+
+    border-radius: 999px;
+    z-index: 10;
+
+    animation: shoot ease-out forwards;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+}
