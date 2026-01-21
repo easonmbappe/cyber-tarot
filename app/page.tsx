@@ -87,7 +87,7 @@ export default function Home() {
             disabled={loading}
             className="px-8 bg-purple-600 hover:bg-purple-700 rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "连接中..." : "占卜"}
+            {loading ? "占卜中..." : "占卜"}
           </button>
         </div>
 
