@@ -8,6 +8,8 @@ import { FULL_TAROT_DECK, TAROT_CARDS_LIST } from '@/data/tarot-data';
 // 引入你刚才写的背景组件 (确保路径对，如果报错试试改用 ../components/CosmicBackground)
 import CosmicBackground from '../components/CosmicBackground';
 
+import MagicCursor from '@/components/MagicCursor';
+
 export default function Home() {
   // 定义状态
   const [question, setQuestion] = useState('');
@@ -63,18 +65,18 @@ export default function Home() {
       {/* 1. 放置宇宙背景组件 */}
       {/* 它内部是 fixed/absolute 定位，会自己沉在底下 */}
       <CosmicBackground />
-
+      <MagicCursor />
       {/* 2. 内容容器：关键是 z-10 和 relative */}
       {/* 这样才能确保按钮和输入框在星星上面，可以被点击 */}
       <div className="relative z-10 p-6">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
 
           {/* === 标题区 === */}
-          <div className="text-center mb-12 mt-8">
-            <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse">
-              CYBER TAROT
+          <div className="text-center mb-12 mt-8 relative z-10">
+            <h1 className="text-6xl md:text-8xl font-bold mb-4 tracking-tighter aurora-text drop-shadow-2xl">
+              TAROT
             </h1>
-            <p className="text-gray-500 tracking-[0.5em] text-xs md:text-sm uppercase">
+            <p className="text-purple-300/70 tracking-[0.5em] text-xs md:text-sm uppercase animate-pulse">
               Driven Destiny
             </p>
           </div>
@@ -107,13 +109,17 @@ export default function Home() {
                   className="group flex flex-col items-center animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both"
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
-                  <div className="relative w-48 aspect-[3/5] rounded-lg overflow-hidden border-2 border-purple-500/20 group-hover:border-purple-500/80 shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]">
+                  <div className="relative w-48 aspect-[3/5] rounded-lg overflow-hidden transition-all duration-500 group-hover:scale-105 holo-card">
                     <img
                       src={FULL_TAROT_DECK[cardName]}
                       alt={cardName}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                    <div className="scan-line absolute inset-0 w-full h-1/3 bg-gradient-to-b from-transparent via-purple-400/30 to-transparent opacity-0 group-hover:opacity-100 pointer-events-none z-20"></div>
+
+                    {/* 还可以加个边框发光 */}
+                    <div className="absolute inset-0 border-2 border-transparent group-hover:border-purple-400/50 transition-colors duration-300 rounded-lg pointer-events-none"></div>
                   </div>
                   <span className="mt-4 text-sm font-bold text-purple-300 tracking-wider group-hover:text-white transition-colors">
                     {cardName}

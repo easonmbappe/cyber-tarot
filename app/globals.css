@@ -86,5 +86,164 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  cursor: none;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+/* 扫描线动画 */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+.group:hover .scan-line {
+  animation: scan 1.5s linear infinite;
+}
+
+
+/* app/globals.css 底部追加 */
+
+/* 定义流光动画 */
+@keyframes text-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 定义发光呼吸动画 */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.5), 0 0 40px rgba(168, 85, 247, 0.2);
+  }
+
+  50% {
+    text-shadow: 0 0 30px rgba(192, 38, 211, 0.8), 0 0 60px rgba(192, 38, 211, 0.4);
+  }
+}
+
+.aurora-text {
+  /* 核心：设置渐变背景 */
+  background: linear-gradient(300deg,
+      #c084fc,
+      /* 紫色 */
+      #6366f1,
+      /* 靛蓝 */
+      #ec4899,
+      /* 粉红 */
+      #8b5cf6,
+      /* 蓝紫 */
+      #c084fc
+      /* 回到紫色闭环 */
+    );
+  /* 把背景放大，这样移动起来才有流动感 */
+  background-size: 300% 300%;
+
+  /* 核心：把背景裁切到文字上 */
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  /* 文字本身变透明，透出背景 */
+  color: transparent;
+
+  /* 应用流动动画 */
+  animation: text-flow 6s ease infinite;
+}
+
+/* 如果你还想保留一点点光晕，可以加这个类 */
+.neon-glow {
+  animation: glow-pulse 3s ease-in-out infinite alternate;
+}
+
+/* --- 全息卡牌效果 --- */
+@keyframes border-rotate {
+  0% {
+    --border-angle: 0deg;
+  }
+
+  100% {
+    --border-angle: 360deg;
+  }
+}
+
+/* 使用 CSS 变量定义属性，这需要你的 Tailwind 支持 @property (新浏览器都支持) 
+   如果不支持，它会回退到普通边框，不影响使用 */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.holo-card {
+  position: relative;
+  /* 这里的 rounded 必须和你的卡片圆角一致 */
+  border-radius: 0.5rem;
+}
+
+/* 悬停时显示的流光层 */
+.holo-card::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  /* 边框宽度 */
+  border-radius: inherit;
+  background: conic-gradient(from var(--border-angle),
+      #200f2e,
+      #a855f7,
+      /* 紫色 */
+      #ec4899,
+      /* 粉色 */
+      #3b82f6,
+      /* 蓝色 */
+      #a855f7,
+      #200f2e);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: border-rotate 4s linear infinite;
+}
+
+.holo-card:hover::after {
+  opacity: 1;
+}
+
+/* 增加一个发光模糊层 */
+.holo-card::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: inherit;
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  filter: blur(15px);
+  /* 发光晕 */
+  background: conic-gradient(from var(--border-angle),
+      #200f2e,
+      #a855f7,
+      #ec4899,
+      #3b82f6,
+      #200f2e);
+  animation: border-rotate 4s linear infinite;
+}
+
+.holo-card:hover::before {
+  opacity: 0.6;
 }

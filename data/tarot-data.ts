@@ -1,3 +1,5 @@
+// data/tarot-data.ts
+
 // 基础 CDN 地址 (韦特塔罗)
 const BASE_URL = "https://www.sacred-texts.com/tarot/pkt/img";
 
@@ -35,10 +37,17 @@ MAJORS.forEach((name, index) => {
 // 生成小阿卡纳 (56张)
 SUITS.forEach(suit => {
     for (let i = 1; i <= 14; i++) {
-        const fileNum = i.toString().padStart(2, '0');
-        const rankName = RANKS[i] || i.toString(); // 如果是1-10就是数字，否则是宫廷名
+        let fileSuffix = i.toString().padStart(2, '0');
+
+        // 🔥🔥🔥 修复重点：宫廷牌使用特殊缩写 🔥🔥🔥
+        if (i === 11) fileSuffix = 'pa'; // Page
+        if (i === 12) fileSuffix = 'kn'; // Knight
+        if (i === 13) fileSuffix = 'qu'; // Queen
+        if (i === 14) fileSuffix = 'ki'; // King
+
+        const rankName = RANKS[i] || i.toString();
         const fullName = `${suit.name}${rankName}`;
-        FULL_TAROT_DECK[fullName] = `${BASE_URL}/${suit.prefix}${fileNum}.jpg`;
+        FULL_TAROT_DECK[fullName] = `${BASE_URL}/${suit.prefix}${fileSuffix}.jpg`;
     }
 });
 
